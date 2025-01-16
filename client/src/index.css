@@ -98,3 +98,11 @@
   align-items: center;
   justify-content: center;
 }
+
+
+.product_link{
+  text-decoration: none;
+  color: black !important;
+}
+
+
