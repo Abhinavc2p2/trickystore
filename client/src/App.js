@@ -18,17 +18,29 @@ import Orders from "./pages/user/Order";
 import Profile from "./pages/user/Profile";
 import Product from "./pages/Admin/Product";
 import UpdateProduct from "./pages/Admin/UpdateProduct";
+import Search from "./pages/Search";
+import ProductDetails from "./pages/ProductDetails";
+import Allcat from "./pages/Allcat";
+import Singlecat from "./pages/Singlecat";
+import Cart from "./pages/Cart";
 
 function App() {
   return (
     <>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/product/:slug" element={<ProductDetails />} />
+        <Route path="/categories" element={<Allcat />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/category/:slug" element={<Singlecat />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/dashboard" element={<PrivateRoute />}>
           <Route path="user" element={<Dashboard />} />
           <Route path="user/profile" element={<Profile />} />
           <Route path="user/orders" element={<Orders />} />
         </Route>
+
+
 
         <Route path="/dashboard" element={<AdminRoute />}>
           <Route path="admin" element={<AdminDashboard />} />
