@@ -6,6 +6,7 @@ import { Prices } from "../components/Prices";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/cart";
 import toast from "react-hot-toast";
+import "../styles/Homepage.css";
 
 const HomePage = () => {
   const [products, setproducts] = useState([]);
@@ -106,6 +107,13 @@ const HomePage = () => {
 
   return (
     <Layout title={"All Products"}>
+
+<img
+        src="/images/banner.png"
+        className="banner-img"
+        alt="bannerimage"
+        width={"100%"}
+      />
       <div className="row mt-3">
         <div className="col-md-3">
           <h4 className="text-center">Filter By Category</h4>

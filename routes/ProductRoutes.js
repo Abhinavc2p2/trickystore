@@ -1,12 +1,12 @@
 import express from "express";
 import { isAdmin, requireSignIn } from "../middlewares/authMiddleware.js";
 import {
-  braintreetokencontroller,
+  brainTreePaymentController,
+  braintreeTokenController,
   createProductController,
   deleteproductcontroller,
   getproductcontroller,
   getsingleproductscontroller,
-  paymentcontroller,
   productcategorycontroller,
   productCountController,
   productFiltersController,
@@ -17,7 +17,7 @@ import {
   updateproductcontroller,
 } from "../controllers/productcontroller.js";
 import ExpressFormidable from "express-formidable";
-import braintree from "braintree";
+
 
 const router = express.Router();
 
@@ -62,8 +62,10 @@ router.get("/searchproduct/:keyword", searchproductcontroller);
 router.get("/releated-product/:pid/:cid", releatedproductcontroller);
 router.get("/productcat/:slug", productcategorycontroller);
 
-router.get("/braintree/token",braintreetokencontroller)
+router.get("/braintree/token",braintreeTokenController)
 
-router.post("/braintree/payment",requireSignIn,paymentcontroller)
+router.post("/braintree/payment",requireSignIn,brainTreePaymentController)
+
+
 
 export default router;

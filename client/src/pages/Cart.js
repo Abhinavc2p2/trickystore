@@ -5,14 +5,20 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../components/Layout/Layout";
 import DropIn from "braintree-web-drop-in-react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const Cart = () => {
   const [cart, setCart] = useCart();
   const [auth] = useAuth();
   const [clientToken, setclienttoken] = useState("");
   const navigate = useNavigate();
+  const [instance, setInstance] = useState(null);
+  const [loading, setLoading] = useState(false);
+ 
 
   // Calculate total price
+
+
   const total = () => {
     try {
       let total = 0;
@@ -42,14 +48,87 @@ const Cart = () => {
   const gettoken = async () => {
     try {
       const { data } = await axios.get("/api/v1/Product/braintree/token");
+      console.log("Client Token:", data?.clientToken); // Debugging
       setclienttoken(data?.clientToken);
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching client token:", error);
     }
   };
+  
   useEffect(() => {
     gettoken();
   }, [auth?.token]);
+
+  // const handlePayment = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const { nonce } = await instance.requestPaymentMethod();
+  //     const { data } = await axios.post("/api/v1/Product/braintree/payment", {
+  //       nonce,
+  //       cart,
+  //     });
+  //     setLoading(false);
+  //     localStorage.removeItem("cart");
+  //     setCart([]);
+  //     navigate("/dashboard/user/order");
+  //     toast.success("Payment Completed Successfully ");
+  //   } catch (error) {
+  //     console.log(error);
+  //     setLoading(false);
+  //   }
+  // };
+  // const handlePayment = async () => {
+  //   try {
+  //     // Temporary testing logic
+  //     navigate("/dashboard/user/orders"); // Navigate to orders page
+  //     toast.success("Payment simulation completed successfully!");
+  //   } catch (error) {
+  //     console.error("Error in handlePayment:", error);
+  //   }
+  // };
+
+  // const handlePayment = async () => {
+  //   try {
+  //     // Simulating order creation in the database
+  //     setLoading(true);
+  //     const { data } = await axios.post("/api/v1/Product/braintree/payment", {
+  //       cart, // Pass the cart details to create the order
+  //     });
+  //     setLoading(false);
+  
+  //     // Clear the cart and navigate to the orders page
+  //     localStorage.removeItem("cart");
+  //     setCart([]);
+  //     navigate("/dashboard/user/orders");
+  //     toast.success("Order created successfully! (Payment bypassed)");
+  //   } catch (error) {
+  //     console.error("Error in handlePayment (Order creation):", error);
+  //     setLoading(false);
+  //     toast.error("Failed to create the order. Please try again.");
+  //   }
+  // };
+
+  const handlePayment = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.post("/api/v1/Product/braintree/payment", {
+        cart, // Send the cart details to create the order
+      });
+      setLoading(false);
+  
+      // Clear the cart and navigate to the orders page
+      localStorage.removeItem("cart");
+      setCart([]);
+      navigate("/dashboard/user/orders");
+      toast.success(data?.message || "Order created successfully! (Payment bypassed)");
+    } catch (error) {
+      console.error("Error in handlePayment (Order creation):", error);
+      setLoading(false);
+      toast.error("Failed to create the order. Please try again.");
+    }
+  };
+  
+  
   return (
     <Layout>
       <div className="container">
@@ -129,6 +208,29 @@ const Cart = () => {
                 )}
               </div>
             )}
+
+<div className="mt-2">
+  {cart.length > 0 && (
+    <div>
+      {/* DropIn component temporarily disabled */}
+      {/* <DropIn
+        options={{
+          authorization: clientToken,
+          paypal: { flow: "vault" },
+        }}
+        onInstance={setInstance}
+      /> */}
+      <button
+        className="btn btn-primary"
+        onClick={handlePayment}
+      >
+        Place Order
+      </button>
+    </div>
+  )}
+</div>
+
+
           </div>
         </div>
       </div>

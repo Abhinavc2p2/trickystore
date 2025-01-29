@@ -1,16 +1,24 @@
 import ProductModel from "../models/ProductModel.js";
-
 import slugify from "slugify";
 import fs from "fs";
 import CategoryModel from "../models/CategoryModel.js";
+import ordermodel from "../models/ordermodel.js";
+import braintree from "braintree";
+import dotenv from "dotenv";
 
-// import braintree from "braintree";
-// import ordermodel from "../models/ordermodel.js";
+dotenv.config();
 
-// var gateway = new braintree.BraintreeGateway({
-//   environment: braintree.Environment.Sandbox,
+const gateway = new braintree.BraintreeGateway({
+  environment: braintree.Environment.Sandbox,
+  merchantId: process.env.BRAINTREE_MERCHANTID,
+  publicKey: process.env.BRAINTREE_PUBLICKEY,
+  privateKey: process.env.BRAINTREE_PRIVATEKEY,
+});
+
+
+// console.log("Braintree Config:", {
 //   merchantId: process.env.BRAINTREE_MERCHANTID,
-//   publicKey: process.env.BRAINTREE_MERCHANTID,
+//   publicKey: process.env.BRAINTREE_PUBLICKEY,
 //   privateKey: process.env.BRAINTREE_PRIVATEKEY,
 // });
 
@@ -306,53 +314,83 @@ export const productcategorycontroller = async (req, res) => {
     });
   }
 };
-
-export const braintreetokencontroller = async (req, res) => {
+//  export const braintreeTokenController = async (req, res) => {
+//   try {
+//     // Remove duplicate token generation
+//     gateway.clientToken.generate({}, (err, response) => {
+//       if (err) {
+//         console.error('Error generating token:', err);
+//         return res.status(500).json({ error: 'Failed to generate token' });
+//       }
+//       res.json({ clientToken: response.clientToken });
+//     });
+//   } catch (error) {
+//     console.error('Token generation error:', error);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// };
+export const braintreeTokenController = async (req, res) => {
   try {
-    gateway.clientToken.generate({}, function (err, resp) {
-      if (err) {
-        res.status(500).send(err);
-      }
-      res.send(resp);
-    });
+    // Hardcode the client token for testing
+    const hardcodedToken = "Abhinav"; // Replace with any valid string for testing
+    res.json({ clientToken: hardcodedToken });
   } catch (error) {
-    console.log(error);
-    res.status(400).send({
-      success: false,
-      message: "something went wrong wgile doing payemnt",
-    });
+    console.error("Token generation error:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
+// export const brainTreePaymentController = async (req, res) => {
+//   try {
+//     const { nonce, cart } = req.body;
+//     let total = 0;
+//     cart.map((i) => {
+//       total += i.price;
+//     });
+//     let newTransaction = gateway.transaction.sale(
+//       {
+//         amount: total,
+//         paymentMethodNonce: nonce,
+//         options: {
+//           submitForSettlement: true,
+//         },
+//       },
+//       function (error, result) {
+//         if (result) {
+//           const order = new orderModel({
+//             products: cart,
+//             payment: result,
+//             buyer: req.user._id,
+//           }).save();
+//           res.json({ ok: true });
+//         } else {
+//           res.status(500).send(error);
+//         }
+//       }
+//     );
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
-export const paymentcontroller = async (req, res) => {
+export const brainTreePaymentController = async (req, res) => {
   try {
-    const { cart, nonce } = req.body;
+    const { cart } = req.body;
     let total = 0;
-    cart.map((i) => {
-      total += i.price;
+    cart.forEach((item) => {
+      total += item.price;
     });
-    let newtrans = gateway.transaction.sale(
-      {
-        amount: total,
-        paymentMethodNonce: nonce,
-        options: {
-          submitForSettlement: true,
-        },
-      },
-      function (err, result) {
-        if (result) {
-          const order = new ordermodel({
-            products: cart,
-            payment: result,
-            buyer: req.user._id,
-          }).save();
-          res.json({ ok: true });
-        } else {
-          res.status(500).send(err);
-        }
-      }
-    );
+
+    // Simulate order creation without a payment transaction
+    const order = new ordermodel({
+      products: cart,
+      payment: { status: "bypassed", amount: total },
+      buyer: req.user._id,
+    });
+    await order.save();
+
+    res.json({ success: true, message: "Order created successfully (Payment bypassed)" });
   } catch (error) {
-    console.log(err);
+    console.error("Error in order creation:", error);
+    res.status(500).json({ error: "Failed to create order" });
   }
 };

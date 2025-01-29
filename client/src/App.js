@@ -23,6 +23,7 @@ import ProductDetails from "./pages/ProductDetails";
 import Allcat from "./pages/Allcat";
 import Singlecat from "./pages/Singlecat";
 import Cart from "./pages/Cart";
+import Adminorders from "./pages/Admin/Adminorders";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
           <Route path="admin/Products/:slug" element={<UpdateProduct />} />
           <Route path="admin/products" element={<Product />} />
           <Route path="admin/users" element={<Users />} />
+          <Route path="admin/order" element={<Adminorders />} />
         </Route>
 
         <Route path="/register" element={<Register />} />

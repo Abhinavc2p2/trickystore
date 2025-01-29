@@ -4,6 +4,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useCart } from "../context/cart";
 import toast from "react-hot-toast";
+import "../styles/CategoryProductStyles.css";
 const ProductDetails = () => {
   const params = useParams();
   const [cart,setcart]=useCart()
@@ -45,7 +46,7 @@ console.log("Related Products State:", data?.products || []);
   return (
     <Layout title={"Product Details"}>
       {/* Product Details */}
-      <div className="row container mt-2">
+      <div className="row container mt-2 product-detail">
         <div className="col-md-6">
           {product?._id ? (
             <img
@@ -60,7 +61,7 @@ console.log("Related Products State:", data?.products || []);
           )}
         </div>
 
-        <div className="col-md-6 text-center">
+        <div className="col-md-6 text-center product-details-info">
           <h1>Product Details</h1>
           <h4>Name: {product.name || "Loading..."}</h4>
           <h4>Price: {product.price ? `$${product.price}` : "Loading..."}</h4>
