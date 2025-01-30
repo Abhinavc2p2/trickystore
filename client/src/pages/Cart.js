@@ -152,7 +152,8 @@ const Cart = () => {
               <div key={p._id} className="row m-2 card flex-row">
                 <div className="col-md-4">
                   <img
-                    src={`/api/v1/Product/photo-product/${p._id}`}
+                   src={`${process.env.REACT_APP_API}/api/v1/Product/phoOto-product/${p._id}`}
+
                     className="card-img-top product-img"
                     alt={p.name}
                     height={200}
