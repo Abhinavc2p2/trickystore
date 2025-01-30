@@ -156,7 +156,7 @@ const HomePage = () => {
               products.map((p) => (
                 <div className="card m-2 product-card" key={p._id}>
                   <img
-                src={`${process.env.REACT_APP_API}/api/v1/Product/photo-product/${p._id}`}
+                src={`https://trickystore-run.onrender.com/api/v1/Product/photo-product/${p._id}`}
                     className="card-img-top product-img"
                     alt={p.name}
                   />
