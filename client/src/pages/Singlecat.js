@@ -44,11 +44,11 @@ const Singlecat = () => {
           ) : (
             products.map((p) => (
               <div className="card m-2 product-card" key={p._id}>
-                <img
-                  src={`/api/v1/Product/photo-product/${p._id}`}
-                  className="card-img-top product-img"
-                  alt={p.name}
-                />
+                 <img
+                src={`https://trickystore-run.onrender.com/api/v1/Product/photo-product/${p._id}`}
+                    className="card-img-top product-img"
+                    alt={p.name}
+                  />
                 <div className="card-body">
                   <h5 className="card-title">{p.name}</h5>
                   <p className="card-text">{p.description.substring(0, 30)}</p>

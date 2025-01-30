@@ -172,7 +172,7 @@ const UpdateProduct = () => {
                 ) : (
                   <div className="text-center">
                     <img
-                      src={`/api/v1/Product/photo-product/${id}`}
+                     src={`https://trickystore-run.onrender.com/api/v1/Product/photo-product/${id}`}
                       alt="product_photo"
                       height={"200px"}
                       className="img img-responsive"

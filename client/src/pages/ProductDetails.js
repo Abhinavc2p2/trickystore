@@ -49,8 +49,10 @@ console.log("Related Products State:", data?.products || []);
       <div className="row container mt-2 product-detail">
         <div className="col-md-6">
           {product?._id ? (
+
+            
             <img
-              src={`/api/v1/Product/photo-product/${product._id}`}
+            src={`https://trickystore-run.onrender.com/api/v1/Product/photo-product/${product._id}`}
               className="card-img-top product-img"
               alt={product.name}
               height={300}

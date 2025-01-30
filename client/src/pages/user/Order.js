@@ -61,7 +61,7 @@ const Orders = () => {
               <div key={p._id} className="row m-2 card flex-row">
                 <div className="col-md-4">
                   <img
-                    src={`/api/v1/Product/photo-product/${p._id}`}
+                 src={`https://trickystore-run.onrender.com/api/v1/Product/photo-product/${p._id}`}
                     className="card-img-top product-img"
                     alt={p.name}
                     height={200}
