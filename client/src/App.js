@@ -24,6 +24,9 @@ import Allcat from "./pages/Allcat";
 import Singlecat from "./pages/Singlecat";
 import Cart from "./pages/Cart";
 import Adminorders from "./pages/Admin/Adminorders";
+import axios from "axios";
+
+axios.defaults.baseURL = process.env.REACT_APP_API;
 
 function App() {
   return (

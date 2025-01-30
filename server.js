@@ -25,8 +25,13 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 
-//routes
-app.use(cors({ origin: "*" }));  // Allow requests from any domain
+const corsOptions = {
+  origin: 'https://trickystorerunki.onrender.com', // Frontend URL
+  methods: 'GET,POST,PUT,DELETE',
+  credentials: true, // If you need to send cookies
+};
+
+app.use(cors(corsOptions));  // Allow requests from any domain
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/category",categoryRoute)
 app.use("/api/v1/Product",productroute)
